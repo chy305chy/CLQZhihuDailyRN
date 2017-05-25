@@ -9,9 +9,14 @@ import * as mainCreators from '../actions/main';
 import Main from '../pages/main';
 
 class MainContainer extends Component {
+    static navigationOptions = {
+
+    };
 
     render() {
-        return <Main {...this.props}/>
+        return (
+            <Main {...this.props}/>
+        );
     }
 }
 

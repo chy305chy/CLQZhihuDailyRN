@@ -16,19 +16,20 @@ const App = StackNavigator (
         Main: {
             screen: MainContainer,
             navigationOptions: {
-                headerLeft: null
+                header: null
             }
         }
     },
     {
-        headerMode: 'float',
+        headerMode: 'screen',
         navigationOptions: {
             headerStyle: {
-                backgroundColor: '#3e9ce9'
+                // backgroundColor: '#3e9ce9'
+                backgroundColor: 'rgba(255,255,255, 0)'
             },
             headerTitleStyle: {
                 color: '#fff',
-                fontSize: 20
+                fontSize: 16
             },
             headerTintColor: '#fff'
         }

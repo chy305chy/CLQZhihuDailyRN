@@ -34,16 +34,16 @@ class Splash extends Component {
     }
 
     componentDidMount () {
-        Animated.timing(this.state.originalOpacity, {
-            toValue: 1,
-            duration: 2000
-        }).start(() => {
-            // 动画完成时的回调
-            this.timer = setTimeout(() => {
-                // 延迟1.5s后进入主界面
+        // Animated.timing(this.state.originalOpacity, {
+        //     toValue: 1,
+        //     duration: 2000
+        // }).start(() => {
+        //     // 动画完成时的回调
+        //     this.timer = setTimeout(() => {
+        //         // 延迟1.5s后进入主界面
                 NavigationUtil.reset(this.props.navigation, 'Main');
-            }, 1500)
-        });
+        //     }, 1500)
+        // });
     }
 
     componentWillUnmount() {
