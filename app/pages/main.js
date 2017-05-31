@@ -107,7 +107,6 @@ class Main extends Component {
             <ViewPagerPage
                 imageSource={data.image}
                 titleText={data.title}
-                storyId={data.id}
                 onImageSelected={()=>this.onTopImageSelected(data.id)}
             />
         )
