@@ -7,7 +7,7 @@ React-Native实现知乎日报app（iOS版）
 技术栈：javascript es6、react-native、react-redux、redux-saga
 
 功能介绍： 
-![image](https://github.com/chy305chy/CLQZhihuDailyRN/tree/master/snapshots/1.jpeg)
-![image](https://github.com/chy305chy/CLQZhihuDailyRN/tree/master/snapshots/2.jpeg)
-![image](https://github.com/chy305chy/CLQZhihuDailyRN/tree/master/snapshots/3.jpeg)
-![image](https://github.com/chy305chy/CLQZhihuDailyRN/tree/master/snapshots/4.jpeg)
+![Alt text](https://github.com/chy305chy/CLQZhihuDailyRN/tree/master/snapshots/1.jpeg)
+![Alt text](https://github.com/chy305chy/CLQZhihuDailyRN/tree/master/snapshots/2.jpeg)
+![Alt text](https://github.com/chy305chy/CLQZhihuDailyRN/tree/master/snapshots/3.jpeg)
+![Alt text](https://github.com/chy305chy/CLQZhihuDailyRN/tree/master/snapshots/4.jpeg)
