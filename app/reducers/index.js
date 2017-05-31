@@ -4,10 +4,12 @@
 import {combineReducers} from 'redux';
 import splash from './startImage';
 import main from './main';
+import storyDetail from './storyDetail';
 
 const rootReducer = combineReducers({
     splash,
-    main
+    main,
+    storyDetail
 });
 
 export default rootReducer;

@@ -18,6 +18,7 @@ import ViewPager from 'react-native-viewpager';
 import ViewPagerPage from './mainTopPage';
 import MainNavBar from './mainNavBar';
 import * as Common from '../constants/constant';
+import store from 'react-native-simple-store';
 
 const propTypes = {
     mainActions: PropTypes.object,
@@ -34,12 +35,18 @@ class Main extends Component {
     constructor(props) {
         super(props);
 
+        this.renderListViewItem = this.renderListViewItem.bind(this);
+        this.renderViewPagerPage = this.renderViewPagerPage.bind(this);
+
         this.state = {
             viewPagerDataSource: new ViewPager.DataSource({
                 pageHasChanged: (p1, p2) => p1 !== p2
             }),
             storyListDataSource: new ListView.DataSource({
-                rowHasChanged: (r1, r2) => r1 !== r2
+                rowHasChanged: (r1, r2) => r1 !== r2,
+                sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+                getRowData: (dataBlob, sectionId, rowId) => dataBlob[rowId],
+                getSectionHeaderData: (dataBlob, sectionId) => dataBlob[sectionId]
             })
         };
     }
@@ -65,8 +72,32 @@ class Main extends Component {
         });
     }
 
+    // 滚动到底部自动加载更多
+    onEndReached() {
+        const {mainActions} = this.props;
+
+        store.get('isLoading').then((isLoading) => {
+            if (!isLoading) {
+                mainActions.requestPreviousStories();
+            }
+        });
+    }
+
+    onCellPressed(storyId) {
+        // const {mainActions} = this.props;
+        // mainActions.requestStoryDetail(rowData.id);
+        const {navigate} = this.props.navigation;
+        navigate('StoryDetail', {storyId});
+    };
+
+    onTopImageSelected(storyId) {
+        const {navigate} = this.props.navigation;
+        navigate('StoryDetail', {storyId});
+    }
+
     componentWillMount() {
         const {mainActions} = this.props;
+        store.save('isLoading', true);
         mainActions.requestLatestStories();
     }
 
@@ -77,21 +108,22 @@ class Main extends Component {
                 imageSource={data.image}
                 titleText={data.title}
                 storyId={data.id}
+                onImageSelected={()=>this.onTopImageSelected(data.id)}
             />
         )
     }
 
     // 渲染ListView单个item
-    renderListViewItem = row => {
+    renderListViewItem(rowData) {
         return (
-            <TouchableWithoutFeedback onPress={()=>this.onSelectStoryItem(row)}>
+            <TouchableWithoutFeedback onPress={()=>this.onCellPressed(rowData.id)}>
                 <View style={styles.listItemContainer}>
                     <Text style={styles.storyTitle}>
-                        {row.title}
+                        {rowData.title}
                     </Text>
                     <Image
                         style={styles.storyImage}
-                        source={{uri: row.images[0]}}
+                        source={{uri: rowData.images[0]}}
                     />
                 </View>
             </TouchableWithoutFeedback>
@@ -112,13 +144,20 @@ class Main extends Component {
         );
     };
 
-    onSelectStoryItem(story) {
-
+    renderSectionHeader(sectionData, sectionId) {
+        return (
+            <View style={styles.section}>
+                <Text style={styles.sectionText}>
+                    {sectionData}
+                </Text>
+            </View>
+        )
     }
+
+
 
     render() {
         const {main} = this.props;
-
         // story列表
         let storyListView = null;
         if (main.stories) {
@@ -126,10 +165,12 @@ class Main extends Component {
                 <ListView
                     ref={(ref) => this._scrollView = ref}
                     style={styles.container}
-                    dataSource={this.state.storyListDataSource.cloneWithRows(main.stories)}
+                    dataSource={this.state.storyListDataSource.cloneWithRowsAndSections(main.stories, main.storySectionIds, main.storyRowIds)}
                     renderRow={this.renderListViewItem}
                     renderHeader={()=>this.renderListViewHeader()}
                     onScroll={(e) => this.onScroll(e, this.props)}
+                    onEndReached={()=>this.onEndReached()}
+                    onEndReachedThreshold={1}
                     scrollEventThrottle={12}
                     showsVerticalScrollIndicator={false}
                 />
@@ -181,7 +222,7 @@ const styles = StyleSheet.create({
     },
     listItemContainer: {
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         backgroundColor: '#fcfcfc',
         padding: 0,
@@ -190,17 +231,31 @@ const styles = StyleSheet.create({
         height: 100,
     },
     storyTitle: {
-        marginTop: 10,
-        marginLeft: 10,
+        position: 'absolute',
+        top: 10,
+        left: 10,
         width: Dimensions.get('window').width - 110,
         fontSize: 15,
         color: 'black',
         backgroundColor: 'transparent'
     },
     storyImage: {
+        marginRight: 10,
         width: 85,
         height: 85
-    }
+    },
+    section: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        padding: 6,
+        backgroundColor: '#2196F3'
+    },
+    sectionText: {
+        color: 'white',
+        paddingHorizontal: 8,
+        fontSize: 14
+    },
 });
 
 Main.propTypes = propTypes;

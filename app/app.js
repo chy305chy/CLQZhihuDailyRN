@@ -4,6 +4,7 @@
 import { StackNavigator } from 'react-navigation';
 import  SplashContainer from './containers/splashContainer';
 import MainContainer from './containers/mainContainer';
+import StoryDetailContainer from './containers/storyDetailContainer';
 
 const App = StackNavigator (
     {
@@ -15,6 +16,12 @@ const App = StackNavigator (
         },
         Main: {
             screen: MainContainer,
+            navigationOptions: {
+                header: null
+            }
+        },
+        StoryDetail: {
+            screen: StoryDetailContainer,
             navigationOptions: {
                 header: null
             }

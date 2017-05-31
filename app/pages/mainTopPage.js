@@ -14,13 +14,15 @@ import * as Common from '../constants/constant';
 
 class ViewPagerPage extends Component {
 
-    onImageSelected() {
-        console.log(this.props.storyId);
-    }
+    // onImageSelected(storyId) {
+    //     // const {navigate} = this.props.navigation;
+    //     // navigate('StoryDetail', {storyId});
+    //     console.log(storyId);
+    // }
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={() => this.onImageSelected()}>
+            <TouchableWithoutFeedback onPress={()=>this.props.onImageSelected()}>
                 <Image
                     source={{uri: this.props.imageSource}}
                     style={styles.image}
